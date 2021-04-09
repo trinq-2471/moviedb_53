@@ -12,7 +12,7 @@ class MainActivity : BaseActivity() {
 
     override fun onInit() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.mFrameMain, HomePageFragment())
+            .add(R.id.mFrameMain, HomePageFragment.newInstance())
             .commit()
     }
 }
