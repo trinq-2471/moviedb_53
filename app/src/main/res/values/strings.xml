@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">moviedb_53</string>
+    <string name="app_name">THE CINEMA</string>
+    <string name="home">Home</string>
+    <string name="hot">Hot</string>
+    <string name="genres">Genres</string>
+    <string name="favorite">Favorite</string>
+    <string name="title_app">T H E   C I N E M A</string>
+    <string name="search">Search</string>
 </resources>
