@@ -9,6 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
+        buildConfigField "String", "API_KEY", "\"${API_KEY}\""
         applicationId "com.sun.moviedb_53"
         minSdkVersion 16
         targetSdkVersion 30
