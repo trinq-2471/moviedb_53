@@ -1,7 +1,8 @@
 package com.sun.moviedb_53.data.source.remote.fetchjson
 
+import com.sun.moviedb_53.data.model.GenresEntry
 import com.sun.moviedb_53.data.model.HotMovieEntry
-import com.sun.moviedb_53.utils.KeyEntityTpye
+import com.sun.moviedb_53.utils.KeyEntityType
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -9,7 +10,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.jvm.Throws
 
 class ParseDataWithJson {
 
@@ -39,12 +39,24 @@ class ParseDataWithJson {
         }
     }
 
-    fun parseJsonToData(jsonObject: JSONObject?, keyEntityType: KeyEntityTpye): Any? {
+    fun parseJsonToData(jsonObject: JSONObject?, keyEntityType: KeyEntityType): Any? {
         return try {
             when (keyEntityType) {
-                KeyEntityTpye.MOVIE_ITEM -> {
+                KeyEntityType.MOVIE_ITEM -> {
                     return parseJsonToList(
                         jsonObject?.getJSONArray(HotMovieEntry.MOVIE),
+                        keyEntityType
+                    )
+                }
+                KeyEntityType.MOVIE_DETAIL -> {
+                    parseJsonToObject(
+                        jsonObject,
+                        keyEntityType
+                    )
+                }
+                KeyEntityType.GENRES_DETAIL_MOVIE -> {
+                    parseJsonToList(
+                        jsonObject?.getJSONArray(GenresEntry.LIST_GENRES),
                         keyEntityType
                     )
                 }
@@ -54,26 +66,32 @@ class ParseDataWithJson {
         }
     }
 
-    private fun parseJsonToList(jsonArray: JSONArray?, typeModel: KeyEntityTpye): Any? {
-        try {
+    fun parseJsonToList(jsonArray: JSONArray?, typeModel: KeyEntityType): Any? {
+        return try {
             val data = mutableListOf<Any?>()
             for (i in 0 until (jsonArray?.length() ?: 0)) {
                 val jsonObject = jsonArray?.getJSONObject(i)
                 data.add(parseJsonToObject(jsonObject, typeModel))
             }
-            return data.filterNotNull()
+            data.filterNotNull()
         } catch (e: JSONException) {
             e.printStackTrace()
-            return null
+            null
         }
     }
 
-    private fun parseJsonToObject(jsonObject: JSONObject?, keyEntityType: KeyEntityTpye): Any? {
+    private fun parseJsonToObject(jsonObject: JSONObject?, keyEntityType: KeyEntityType): Any? {
         try {
             jsonObject?.let {
                 return when (keyEntityType) {
-                    KeyEntityTpye.MOVIE_ITEM -> {
+                    KeyEntityType.MOVIE_ITEM -> {
                         ParseJson().movieParseJson(it)
+                    }
+                    KeyEntityType.MOVIE_DETAIL -> {
+                        ParseJson().movieDetailParseJson(it)
+                    }
+                    KeyEntityType.GENRES_DETAIL_MOVIE -> {
+                        ParseJson().genresParseJson(it)
                     }
                 }
             }

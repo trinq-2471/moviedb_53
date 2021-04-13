@@ -9,4 +9,5 @@
     <string name="popular">popular</string>
     <string name="top_rate">Top Rate</string>
     <string name="up_coming">Up Coming</string>
+    <string name="overview">Overview: \n</string>
 </resources>
