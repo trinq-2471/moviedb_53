@@ -4,11 +4,14 @@ import com.sun.moviedb_53.data.model.HotMovie
 import com.sun.moviedb_53.data.source.MovieDataSource
 import com.sun.moviedb_53.data.source.remote.fetchjson.GetJsonFromUrl
 import com.sun.moviedb_53.utils.Constant
+import com.sun.moviedb_53.utils.DetailMovieType
 import com.sun.moviedb_53.utils.HotMovieType
-import com.sun.moviedb_53.utils.KeyEntityTpye
+import com.sun.moviedb_53.utils.KeyEntityType
 
 @Suppress("DEPRECATION")
 class MovieRemoteDataSource : MovieDataSource.Remote {
+
+    private val endPointParams = Constant.BASE_API_KEY + Constant.BASE_LANGUAGE
 
     override fun getHotMovies(
         page: Int,
@@ -19,7 +22,19 @@ class MovieRemoteDataSource : MovieDataSource.Remote {
                 Constant.BASE_API_KEY +
                 Constant.BASE_LANGUAGE +
                 Constant.BASE_PAGE + page
-        GetJsonFromUrl(listener, KeyEntityTpye.MOVIE_ITEM).execute(baseUrl)
+        GetJsonFromUrl(listener, KeyEntityType.MOVIE_ITEM).execute(baseUrl)
+    }
+
+    override fun <T> getDataInMovieDetail(
+        idMovie: Int,
+        detailMovieType: DetailMovieType,
+        listener: OnFetchDataJsonListener<T>
+    ) {
+        val stringUrl = Constant.BASE_URL +
+                MOVIE_TYPE + idMovie +
+                detailMovieType.path +
+                endPointParams
+        GetJsonFromUrl(listener, KeyEntityType.MOVIE_DETAIL).execute(stringUrl)
     }
 
     companion object {

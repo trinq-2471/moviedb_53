@@ -2,13 +2,13 @@ package com.sun.moviedb_53.data.source.remote.fetchjson
 
 import android.os.AsyncTask
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
-import com.sun.moviedb_53.utils.KeyEntityTpye
+import com.sun.moviedb_53.utils.KeyEntityType
 import org.json.JSONObject
 
 @Suppress("DEPRECATION")
 class GetJsonFromUrl<T> constructor(
     private val listener: OnFetchDataJsonListener<T>,
-    private val keyEntityType: KeyEntityTpye
+    private val keyEntityType: KeyEntityType
 ) : AsyncTask<String?, Void?, String?>() {
 
     private var exception: Exception? = null
