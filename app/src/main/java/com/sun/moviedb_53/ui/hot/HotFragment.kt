@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sun.moviedb_53.R
 import com.sun.moviedb_53.base.BaseFragment
 import com.sun.moviedb_53.data.model.HotMovie
-import com.sun.moviedb_53.data.source.MovieRepository
-import com.sun.moviedb_53.data.source.local.MovieLocalDataSource
+import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.data.source.remote.MovieRemoteDataSource
 import com.sun.moviedb_53.extensions.addFragment
 import com.sun.moviedb_53.ui.detail.movie.MovieDetailFragment
@@ -28,7 +27,7 @@ class HotFragment : BaseFragment(), HotMovieContact.View {
     private val adapterHotMovie by lazy {
         HotMovieAdapter {
             it.id?.apply {
-                addFragment(MovieDetailFragment.newInstance(id), R.id.mFrameMain)
+                addFragment(MovieDetailFragment.newInstance(this), R.id.mFrameMain)
             }
         }
     }
@@ -49,8 +48,7 @@ class HotFragment : BaseFragment(), HotMovieContact.View {
     private fun initData() {
         hotMoviePresenter = HotMoviePresenter(
             MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance(),
-                MovieLocalDataSource.getInstance()
+                MovieRemoteDataSource.getInstance()
             )
         )
         hotMoviePresenter.setView(this)
