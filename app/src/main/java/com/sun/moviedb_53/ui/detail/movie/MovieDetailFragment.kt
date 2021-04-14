@@ -1,18 +1,21 @@
 package com.sun.moviedb_53.ui.detail.movie
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Point
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.Display
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.sun.moviedb_53.R
 import com.sun.moviedb_53.base.BaseFragment
-import com.sun.moviedb_53.data.model.MovieDetail
-import com.sun.moviedb_53.data.source.MovieRepository
+import com.sun.moviedb_53.data.model.*
+import com.sun.moviedb_53.data.source.repository.MovieRepository
+import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.local.MovieLocalDataSource
 import com.sun.moviedb_53.data.source.remote.MovieRemoteDataSource
+import com.sun.moviedb_53.data.source.repository.FavoriteRepository
 import com.sun.moviedb_53.extensions.loadFromUrl
 import com.sun.moviedb_53.utils.Constant
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -22,6 +25,8 @@ import kotlin.math.roundToInt
 @Suppress("DEPRECATION")
 class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
 
+    private var isFavoriteMovie = false
+    private var favorite: Favorite? = null
     private var idMovie: Int? = null
     private var detailPresenter: MovieDetailPresenter? = null
 
@@ -31,17 +36,18 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         super.onCreate(savedInstanceState)
 
         detailPresenter = MovieDetailPresenter(
-            MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance(),
-                MovieLocalDataSource.getInstance()
-            )
+            MovieRepository.getInstance(MovieRemoteDataSource.getInstance()),
+            FavoriteRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity()))
         )
         arguments?.let {
             idMovie = it.getInt(ID_MOVIE_DETAIL)
         }
         detailPresenter?.let {
             it.setView(this)
-            idMovie?.let { id -> it.getMovieDetail(id) }
+            idMovie?.let { id ->
+                it.getMovieDetail(id)
+                it.getVideoTrailer(id)
+            }
         }
     }
 
@@ -50,10 +56,44 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
     }
 
     override fun loadContentMovieOnSuccess(movieDetail: MovieDetail) {
+        movieDetail.run {
+            favorite = Favorite(id, title, photoPoster, tagLine, rate)
+        }
         initDataMovieDetail(movieDetail)
     }
 
-    override fun onError(exception: Exception?) {}
+    override fun loadVideoTrailerOnSuccess(video: VideoYoutube?) {
+        imagePlay.setOnClickListener {
+            video?.let {
+                openYouTube(it.key)
+            } ?: Toast.makeText(
+                context,
+                getString(R.string.no_video),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun loadListActorOnSuccess(movies: List<Actor>) {}
+
+    override fun loadRecommendationOnSuccess(movies: List<HotMovie>) {}
+
+    override fun onError(exception: Exception?) {
+        exception?.let {
+            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onEvent() {
+        imageBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+        imageFavorite.setOnClickListener {
+            favorite?.let {
+                updateFavorite(it)
+            }
+        }
+    }
 
     private fun onInitView() {
         val height = requireActivity().windowManager.defaultDisplay.run {
@@ -74,27 +114,51 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
             textOverview.text = resources.getString(R.string.overview) + description
             textRelease.text = releaseDate
             textTagLine.text = tagLine
-            ratingBar.rating = rate.toFloat() / 2
             textGenres.text = movieDetail.genres.joinToString(", ") { it.name }
+            ratingBar.rating = rate.toFloat() / 2
             imagePoster.loadFromUrl(Constant.BASE_URL_IMAGE + photoPoster)
             imageBackground.loadFromUrl(Constant.BASE_URL_IMAGE + photoUrl)
+
+            isFavoriteMovie = movieDetail.isFavorite
+            selectedFavorite()
         }
     }
 
-    private fun getHeightDevice(): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            val metrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
-            val usableHeight = metrics.heightPixels
-            requireActivity().windowManager.defaultDisplay.getRealMetrics(metrics)
-            val realHeight = metrics.heightPixels
-            return if (realHeight > usableHeight) realHeight - usableHeight else 0
+    private fun updateFavorite(favorite: Favorite) {
+        detailPresenter?.let {
+            if (isFavoriteMovie) it.deleteFavorite(favorite.id) else it.insertFavorite(favorite)
+            isFavoriteMovie = !isFavoriteMovie
+            selectedFavorite()
         }
-        return 0
+    }
+
+    private fun selectedFavorite() {
+        if (isFavoriteMovie) imageFavorite.setImageResource(R.drawable.ic_heart_red)
+        else imageFavorite.setImageResource(R.drawable.ic_heart_default)
+    }
+
+    private fun openYouTube(idYoutube: String) {
+        try {
+            context?.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(URI_YOUTUBE_APP + idYoutube)
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            context?.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(URI_YOUTUBE_WEBSITE + idYoutube)
+                )
+            )
+        }
     }
 
     companion object {
         private const val ID_MOVIE_DETAIL = "ID_MOVIE_DETAIL"
+        private const val URI_YOUTUBE_APP = "vnd.youtube:"
+        private const val URI_YOUTUBE_WEBSITE = "http://www.youtube.com/watch?v="
 
         fun newInstance(id: Int) = MovieDetailFragment().apply {
             arguments = bundleOf(ID_MOVIE_DETAIL to id)

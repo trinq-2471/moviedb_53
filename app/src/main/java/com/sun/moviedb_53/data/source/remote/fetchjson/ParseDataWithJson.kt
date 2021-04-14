@@ -1,7 +1,9 @@
 package com.sun.moviedb_53.data.source.remote.fetchjson
 
+import com.sun.moviedb_53.data.model.ActorEntry
 import com.sun.moviedb_53.data.model.GenresEntry
 import com.sun.moviedb_53.data.model.HotMovieEntry
+import com.sun.moviedb_53.data.model.VideoYoutubeEntry
 import com.sun.moviedb_53.utils.KeyEntityType
 import org.json.JSONArray
 import org.json.JSONException
@@ -60,6 +62,18 @@ class ParseDataWithJson {
                         keyEntityType
                     )
                 }
+                KeyEntityType.ACTOR -> {
+                    parseJsonToList(
+                        jsonObject?.getJSONArray(ActorEntry.LIST_ACTOR),
+                        keyEntityType
+                    )
+                }
+                KeyEntityType.VIDEO_YOUTUBE -> {
+                    parseJsonToList(
+                        jsonObject?.getJSONArray(VideoYoutubeEntry.LIST_VIDEOS),
+                        keyEntityType
+                    )
+                }
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -92,6 +106,12 @@ class ParseDataWithJson {
                     }
                     KeyEntityType.GENRES_DETAIL_MOVIE -> {
                         ParseJson().genresParseJson(it)
+                    }
+                    KeyEntityType.ACTOR -> {
+                        ParseJson().actorParseJson(it)
+                    }
+                    KeyEntityType.VIDEO_YOUTUBE -> {
+                        ParseJson().videoYoutubeParseJson(it)
                     }
                 }
             }

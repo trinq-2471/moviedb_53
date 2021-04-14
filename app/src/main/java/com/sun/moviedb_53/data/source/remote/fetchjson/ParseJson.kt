@@ -41,4 +41,20 @@ class ParseJson {
             getString(GenresEntry.NAME)
         )
     }
+
+    fun actorParseJson(jsonObject: JSONObject?) = jsonObject?.run {
+        Actor(
+            getInt(ActorEntry.ID),
+            getString(ActorEntry.NAME),
+            getString(ActorEntry.IMAGE_URL)
+        )
+    }
+
+    fun videoYoutubeParseJson(jsonObject: JSONObject?) = jsonObject?.run {
+        VideoYoutube(
+            getString(VideoYoutubeEntry.ID),
+            getString(VideoYoutubeEntry.KEY_YOUTUBE),
+            getString(VideoYoutubeEntry.TYPE)
+        )
+    }
 }

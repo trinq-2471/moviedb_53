@@ -3,6 +3,7 @@ package com.sun.moviedb_53.data.source.remote
 import com.sun.moviedb_53.data.model.HotMovie
 import com.sun.moviedb_53.data.source.MovieDataSource
 import com.sun.moviedb_53.data.source.remote.fetchjson.GetJsonFromUrl
+import com.sun.moviedb_53.data.source.remote.fetchjson.ParseJson
 import com.sun.moviedb_53.utils.Constant
 import com.sun.moviedb_53.utils.DetailMovieType
 import com.sun.moviedb_53.utils.HotMovieType
@@ -34,7 +35,26 @@ class MovieRemoteDataSource : MovieDataSource.Remote {
                 MOVIE_TYPE + idMovie +
                 detailMovieType.path +
                 endPointParams
-        GetJsonFromUrl(listener, KeyEntityType.MOVIE_DETAIL).execute(stringUrl)
+
+        when (detailMovieType) {
+            DetailMovieType.MOVIE_DETAIL -> GetJsonFromUrl(
+                listener,
+                KeyEntityType.MOVIE_DETAIL
+            ).execute(stringUrl)
+            DetailMovieType.ACTOR -> GetJsonFromUrl(
+                listener,
+                KeyEntityType.ACTOR
+            ).execute(stringUrl)
+            DetailMovieType.VIDEO_YOUTUBE -> GetJsonFromUrl(
+                listener,
+                KeyEntityType.VIDEO_YOUTUBE
+            ).execute(stringUrl)
+            DetailMovieType.RECOMMENDATIONS -> GetJsonFromUrl(
+                listener,
+                KeyEntityType.MOVIE_ITEM
+            ).execute(stringUrl)
+        }
+
     }
 
     companion object {
