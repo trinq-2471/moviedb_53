@@ -16,7 +16,8 @@ interface MovieDetailContact {
         fun getVideoTrailer(idMovieDetail: Int)
         fun getListMovieRecommendations(idMovieDetail: Int)
         fun getActorInMovieDetail(idMovieDetail: Int)
-        fun deleteFavorite(id: Int)
-        fun insertFavorite(favorite: Favorite)
+        fun deleteFavorite(idMovieDetail: Int): Boolean
+        fun insertFavorite(favorite: Favorite): Boolean
+        fun checkFavorite(idMovieDetail: Int): Boolean
     }
 }

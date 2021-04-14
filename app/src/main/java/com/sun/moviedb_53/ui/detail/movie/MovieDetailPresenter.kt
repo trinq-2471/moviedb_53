@@ -2,10 +2,14 @@ package com.sun.moviedb_53.ui.detail.movie
 
 import com.sun.moviedb_53.data.model.Favorite
 import com.sun.moviedb_53.data.model.MovieDetail
-import com.sun.moviedb_53.data.source.MovieRepository
+import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
+import com.sun.moviedb_53.data.source.repository.FavoriteRepository
 
-class MovieDetailPresenter(private val repository: MovieRepository) :
+class MovieDetailPresenter(
+    private val repository: MovieRepository,
+    private val favoriteRepository: FavoriteRepository
+) :
     MovieDetailContact.Presenter {
 
     private var view: MovieDetailContact.View? = null
@@ -13,6 +17,9 @@ class MovieDetailPresenter(private val repository: MovieRepository) :
     override fun getMovieDetail(id: Int) {
         repository.getMovieDetails(id, object : OnFetchDataJsonListener<MovieDetail> {
             override fun onSuccess(data: MovieDetail) {
+                if (checkFavorite(data.id)) {
+                    data.isFavorite = true
+                }
                 view?.loadContentMovieOnSuccess(data)
             }
 
@@ -28,9 +35,12 @@ class MovieDetailPresenter(private val repository: MovieRepository) :
 
     override fun getActorInMovieDetail(idMovieDetail: Int) {}
 
-    override fun deleteFavorite(id: Int) {}
+    override fun deleteFavorite(idMovieDetail: Int) =
+        favoriteRepository.deleteFavorite(idMovieDetail)
 
-    override fun insertFavorite(favorite: Favorite) {}
+    override fun insertFavorite(favorite: Favorite) = favoriteRepository.saveFavorite(favorite)
+
+    override fun checkFavorite(idMovieDetail: Int) = favoriteRepository.checkFavorite(idMovieDetail)
 
     override fun onStart() {}
 

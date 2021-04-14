@@ -1,5 +1,6 @@
 package com.sun.moviedb_53.data.source
 
+import com.sun.moviedb_53.data.model.Favorite
 import com.sun.moviedb_53.data.model.HotMovie
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
 import com.sun.moviedb_53.utils.DetailMovieType
@@ -7,7 +8,12 @@ import com.sun.moviedb_53.utils.HotMovieType
 
 interface MovieDataSource {
 
-    interface Local
+    interface Local {
+        fun saveMovie(favorite: Favorite): Boolean
+        fun getListFavorite(): MutableList<Favorite>
+        fun deleteFavorite(idMovie: Int): Boolean
+        fun checkFavorite(idMovie: Int): Boolean
+    }
 
     interface Remote {
         fun getHotMovies(

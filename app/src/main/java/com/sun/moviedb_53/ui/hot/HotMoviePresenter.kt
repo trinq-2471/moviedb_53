@@ -1,7 +1,7 @@
 package com.sun.moviedb_53.ui.hot
 
 import com.sun.moviedb_53.data.model.HotMovie
-import com.sun.moviedb_53.data.source.MovieRepository
+import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
 import com.sun.moviedb_53.utils.Constant
 import com.sun.moviedb_53.utils.HotMovieType
