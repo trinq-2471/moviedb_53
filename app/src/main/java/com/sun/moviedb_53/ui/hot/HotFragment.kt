@@ -28,7 +28,7 @@ class HotFragment : BaseFragment(), HotMovieContact.View {
     private val adapterHotMovie by lazy {
         HotMovieAdapter {
             it.id?.apply {
-                addFragment(MovieDetailFragment.newInstance(id), R.id.mFrameMain)
+                addFragment(MovieDetailFragment.newInstance(this), R.id.mFrameMain)
             }
         }
     }

@@ -3,7 +3,8 @@ package com.sun.moviedb_53.data.model
 data class Genres (
     val id : Int,
     val name : String,
-    val isClick : Boolean = false
+    var isClick : Boolean = false,
+    var positionSelected : Int? = null
 )
 
 object GenresEntry {
