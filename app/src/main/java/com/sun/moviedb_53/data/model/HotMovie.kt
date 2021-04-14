@@ -1,13 +1,13 @@
 package com.sun.moviedb_53.data.model
 
-data class HotMovie (
-    val id : Int,
-    var title : String,
-    var posterPath : String,
-    var voteAverage : Double
+data class HotMovie(
+    val id: Int?,
+    val title: String?,
+    val posterPath: String?,
+    val voteAverage: Double?
 )
 
-object HotMovieEntry{
+object HotMovieEntry {
     const val MOVIE = "results"
     const val ID = "id"
     const val VOTE = "vote_average"
