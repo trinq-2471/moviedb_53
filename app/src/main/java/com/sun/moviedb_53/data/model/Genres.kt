@@ -1,8 +1,9 @@
 package com.sun.moviedb_53.data.model
 
-data class Genres(
-    val id: Int,
-    val name: String
+data class Genres (
+    val id : Int,
+    val name : String,
+    val isClick : Boolean = false
 )
 
 object GenresEntry {
