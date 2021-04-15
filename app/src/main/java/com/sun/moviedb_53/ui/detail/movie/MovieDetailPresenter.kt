@@ -1,8 +1,6 @@
 package com.sun.moviedb_53.ui.detail.movie
 
-import com.sun.moviedb_53.data.model.Favorite
-import com.sun.moviedb_53.data.model.MovieDetail
-import com.sun.moviedb_53.data.model.VideoYoutube
+import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
 import com.sun.moviedb_53.data.source.repository.FavoriteRepository
@@ -44,9 +42,33 @@ class MovieDetailPresenter(
             })
     }
 
-    override fun getListMovieRecommendations(idMovieDetail: Int) {}
+    override fun getListMovieRecommendations(idMovieDetail: Int) {
+        repository.getListRecommendationsInMovieDetail(
+            idMovieDetail,
+            object : OnFetchDataJsonListener<List<HotMovie>> {
+                override fun onSuccess(data: List<HotMovie>) {
+                    view?.loadRecommendationOnSuccess(data)
+                }
 
-    override fun getActorInMovieDetail(idMovieDetail: Int) {}
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                }
+            })
+    }
+
+    override fun getActorInMovieDetail(idMovieDetail: Int) {
+        repository.getListActorInMovieDetail(
+            idMovieDetail,
+            object : OnFetchDataJsonListener<List<Actor>> {
+                override fun onSuccess(data: List<Actor>) {
+                    view?.loadListActorOnSuccess(data)
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                }
+            })
+    }
 
     override fun deleteFavorite(idMovieDetail: Int) =
         favoriteRepository.deleteFavorite(idMovieDetail)
