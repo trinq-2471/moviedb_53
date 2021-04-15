@@ -56,7 +56,7 @@ class ParseDataWithJson {
                         keyEntityType
                     )
                 }
-                KeyEntityType.GENRES_DETAIL_MOVIE -> {
+                KeyEntityType.GENRES_ITEM -> {
                     parseJsonToList(
                         jsonObject?.getJSONArray(GenresEntry.LIST_GENRES),
                         keyEntityType
@@ -104,7 +104,7 @@ class ParseDataWithJson {
                     KeyEntityType.MOVIE_DETAIL -> {
                         ParseJson().movieDetailParseJson(it)
                     }
-                    KeyEntityType.GENRES_DETAIL_MOVIE -> {
+                    KeyEntityType.GENRES_ITEM -> {
                         ParseJson().genresParseJson(it)
                     }
                     KeyEntityType.ACTOR -> {

@@ -19,7 +19,7 @@ class ParseJson {
     fun movieDetailParseJson(jsonObject: JSONObject) = jsonObject.run {
         val listGenres = ParseDataWithJson().parseJsonToList(
             getJSONArray(GenresEntry.LIST_GENRES),
-            KeyEntityType.GENRES_DETAIL_MOVIE
+            KeyEntityType.GENRES_ITEM
         ) as List<Genres>
 
         MovieDetail(
