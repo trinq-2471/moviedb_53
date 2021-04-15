@@ -7,7 +7,7 @@ data class MovieDetail(
     val rate: Double,
     val description: String,
     val photoPoster: String,
-    val genres: List<Genres>,
+    val genres: List<Genre>,
     val releaseDate: String,
     val tagLine: String,
     var isFavorite: Boolean = false

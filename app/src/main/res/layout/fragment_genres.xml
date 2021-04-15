@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/textGenresTittleText" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -30,13 +32,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@color/white"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenres" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMovieGenres"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_20"
         android:background="@color/blue_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenresSelected" />
 </androidx.constraintlayout.widget.ConstraintLayout>

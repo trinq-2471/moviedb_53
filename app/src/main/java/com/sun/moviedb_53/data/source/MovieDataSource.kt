@@ -1,6 +1,7 @@
 package com.sun.moviedb_53.data.source
 
 import com.sun.moviedb_53.data.model.Favorite
+import com.sun.moviedb_53.data.model.GenresMovie
 import com.sun.moviedb_53.data.model.HotMovie
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
 import com.sun.moviedb_53.utils.DetailMovieType
@@ -26,6 +27,14 @@ interface MovieDataSource {
             idMovie: Int,
             detailMovieType: DetailMovieType,
             listener: OnFetchDataJsonListener<T>
+        )
+
+        fun <T> getGenres(listener: OnFetchDataJsonListener<T>)
+
+        fun getGenresMovie(
+            page: Int,
+            query: String,
+            listener: OnFetchDataJsonListener<MutableList<GenresMovie?>>
         )
     }
 }

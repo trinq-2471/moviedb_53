@@ -7,6 +7,8 @@ object Constant {
     const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500"
     const val BASE_LANGUAGE = "&language=en-US"
     const val BASE_PAGE = "&page="
+    const val BASE_SORT_BY_POPULARITY = "&sort_by=popularity.desc"
+    const val BASE_WITH_GENRES = "&with_genres="
     const val DEFAULT_PAGE = 1
     const val API_KEY = "api_key="
     const val BASE_API_KEY = API_KEY + BuildConfig.API_KEY

@@ -20,7 +20,7 @@ class ParseJson {
         val listGenres = ParseDataWithJson().parseJsonToList(
             getJSONArray(GenresEntry.LIST_GENRES),
             KeyEntityType.GENRES_ITEM
-        ) as List<Genres>
+        ) as List<Genre>
 
         MovieDetail(
             id = getInt(MovieDetailEntry.ID),
@@ -36,7 +36,7 @@ class ParseJson {
     }
 
     fun genresParseJson(jsonObject: JSONObject?) = jsonObject?.run {
-        Genres(
+        Genre(
             getInt(GenresEntry.ID),
             getString(GenresEntry.NAME)
         )
@@ -55,6 +55,14 @@ class ParseJson {
             getString(VideoYoutubeEntry.ID),
             getString(VideoYoutubeEntry.KEY_YOUTUBE),
             getString(VideoYoutubeEntry.TYPE)
+        )
+    }
+
+    fun genresMovieParseJson(jsonObject: JSONObject) = jsonObject.run {
+        GenresMovie(
+            getInt(GenresMovieEntry.ID),
+            getString(GenresMovieEntry.TITLE),
+            getString(GenresMovieEntry.URL_IMAGE)
         )
     }
 }
