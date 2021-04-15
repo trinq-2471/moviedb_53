@@ -1,13 +1,15 @@
 package com.sun.moviedb_53.ui.detail.movie
 
-import com.sun.moviedb_53.data.model.Favorite
-import com.sun.moviedb_53.data.model.MovieDetail
+import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.utils.BasePresenter
 
 interface MovieDetailContact {
 
     interface View {
         fun loadContentMovieOnSuccess(movieDetail: MovieDetail)
+        fun loadVideoTrailerOnSuccess(video: VideoYoutube?)
+        fun loadListActorOnSuccess(movies: List<Actor>)
+        fun loadRecommendationOnSuccess(movies: List<HotMovie>)
         fun onError(exception: Exception?)
     }
 

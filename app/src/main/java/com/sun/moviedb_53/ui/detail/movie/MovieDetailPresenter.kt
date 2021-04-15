@@ -2,6 +2,7 @@ package com.sun.moviedb_53.ui.detail.movie
 
 import com.sun.moviedb_53.data.model.Favorite
 import com.sun.moviedb_53.data.model.MovieDetail
+import com.sun.moviedb_53.data.model.VideoYoutube
 import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
 import com.sun.moviedb_53.data.source.repository.FavoriteRepository
@@ -29,7 +30,19 @@ class MovieDetailPresenter(
         })
     }
 
-    override fun getVideoTrailer(idMovieDetail: Int) {}
+    override fun getVideoTrailer(idMovieDetail: Int) {
+        repository.getListVideoYoutubeInMovieDetail(
+            idMovieDetail,
+            object : OnFetchDataJsonListener<List<VideoYoutube>> {
+                override fun onSuccess(data: List<VideoYoutube>) {
+                    view?.loadVideoTrailerOnSuccess(data.firstOrNull())
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                }
+            })
+    }
 
     override fun getListMovieRecommendations(idMovieDetail: Int) {}
 

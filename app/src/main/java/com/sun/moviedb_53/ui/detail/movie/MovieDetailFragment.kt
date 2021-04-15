@@ -1,14 +1,18 @@
 package com.sun.moviedb_53.ui.detail.movie
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Point
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.sun.moviedb_53.R
 import com.sun.moviedb_53.base.BaseFragment
-import com.sun.moviedb_53.data.model.Favorite
-import com.sun.moviedb_53.data.model.MovieDetail
+import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.repository.MovieRepository
+import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.local.MovieLocalDataSource
 import com.sun.moviedb_53.data.source.remote.MovieRemoteDataSource
 import com.sun.moviedb_53.data.source.repository.FavoriteRepository
@@ -40,7 +44,10 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         }
         detailPresenter?.let {
             it.setView(this)
-            idMovie?.let { id -> it.getMovieDetail(id) }
+            idMovie?.let { id ->
+                it.getMovieDetail(id)
+                it.getVideoTrailer(id)
+            }
         }
     }
 
@@ -55,7 +62,27 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         initDataMovieDetail(movieDetail)
     }
 
-    override fun onError(exception: Exception?) {}
+    override fun loadVideoTrailerOnSuccess(video: VideoYoutube?) {
+        imagePlay.setOnClickListener {
+            video?.let {
+                openYouTube(it.key)
+            } ?: Toast.makeText(
+                context,
+                getString(R.string.no_video),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun loadListActorOnSuccess(movies: List<Actor>) {}
+
+    override fun loadRecommendationOnSuccess(movies: List<HotMovie>) {}
+
+    override fun onError(exception: Exception?) {
+        exception?.let {
+            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onEvent() {
         imageBack.setOnClickListener {
@@ -110,8 +137,28 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         else imageFavorite.setImageResource(R.drawable.ic_heart_default)
     }
 
+    private fun openYouTube(idYoutube: String) {
+        try {
+            context?.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(URI_YOUTUBE_APP + idYoutube)
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            context?.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(URI_YOUTUBE_WEBSITE + idYoutube)
+                )
+            )
+        }
+    }
+
     companion object {
         private const val ID_MOVIE_DETAIL = "ID_MOVIE_DETAIL"
+        private const val URI_YOUTUBE_APP = "vnd.youtube:"
+        private const val URI_YOUTUBE_WEBSITE = "http://www.youtube.com/watch?v="
 
         fun newInstance(id: Int) = MovieDetailFragment().apply {
             arguments = bundleOf(ID_MOVIE_DETAIL to id)
