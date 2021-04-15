@@ -93,7 +93,7 @@ class HotFragment : BaseFragment(), HotMovieContact.View {
             changeDataMovie(HotMovieType.UP_COMING)
             setButtonClick(btnUpComming)
             setButtonNotClick(btnTopRate)
-            setButtonNotClick(btnUpComming)
+            setButtonNotClick(btnPopular)
         }
     }
 

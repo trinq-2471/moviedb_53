@@ -53,10 +53,10 @@ class HotMovieAdapter(private val onItemClick: (HotMovie) -> Unit) :
 
         fun populateItemRow(hotMovie: HotMovie) {
             itemView.apply {
-                tvHotMovieRate.text = (hotMovie.voteAverage).toString()
+                textHotMovieRate.text = (hotMovie.voteAverage).toString()
                 imageHotMovie.loadFromUrl(Constant.BASE_URL_IMAGE + hotMovie.posterPath)
                 rateBarHotMovie.rating = hotMovie.voteAverage?.div(2)?.toFloat() ?: -1f
-                tvHotMovieTittle.text = hotMovie.title
+                textHotMovieTittle.text = hotMovie.title
                 setOnClickListener {
                     onItemClick(hotMovie)
                 }
