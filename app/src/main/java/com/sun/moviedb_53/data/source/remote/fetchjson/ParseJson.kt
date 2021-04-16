@@ -85,4 +85,12 @@ class ParseJson {
             instagram = getString(ExternalEntry.INSTAGRAM)
         )
     }
+
+    fun searchMovieParseJson(jsonObject: JSONObject) = jsonObject.run {
+        SearchMovie(
+            getInt(SearchMovieEnrtry.ID),
+            getString(SearchMovieEnrtry.TITLE),
+            getString(SearchMovieEnrtry.URL_IMAGE)
+        )
+    }
 }
