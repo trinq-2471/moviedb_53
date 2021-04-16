@@ -8,7 +8,6 @@ import com.sun.moviedb_53.R
 import com.sun.moviedb_53.data.model.SearchMovie
 import com.sun.moviedb_53.extensions.loadFromUrl
 import com.sun.moviedb_53.utils.Constant
-
 import kotlinx.android.synthetic.main.item_load_more.view.*
 import kotlinx.android.synthetic.main.item_search_movie.view.*
 
