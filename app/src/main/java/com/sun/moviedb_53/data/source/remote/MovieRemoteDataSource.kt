@@ -3,6 +3,7 @@ package com.sun.moviedb_53.data.source.remote
 import com.sun.moviedb_53.data.model.ActorDetail
 import com.sun.moviedb_53.data.model.GenresMovie
 import com.sun.moviedb_53.data.model.HotMovie
+import com.sun.moviedb_53.data.model.SearchMovie
 import com.sun.moviedb_53.data.source.MovieDataSource
 import com.sun.moviedb_53.data.source.remote.fetchjson.GetJsonFromUrl
 import com.sun.moviedb_53.data.source.remote.fetchjson.ParseJson
@@ -98,11 +99,27 @@ class MovieRemoteDataSource : MovieDataSource.Remote {
         }
     }
 
+    override fun getSearchResult(
+        page: Int,
+        query: String,
+        listener: OnFetchDataJsonListener<MutableList<SearchMovie?>>
+    ) {
+        val stringUrl = Constant.BASE_URL +
+                SEARCH_TYPE +
+                endPointParams +
+                Constant.BASE_PAGE +
+                page +
+                Constant.BASE_QUERY +
+                query
+        GetJsonFromUrl(listener,KeyEntityType.SEARCH_MOVIE_ITEM).execute(stringUrl)
+    }
+
     companion object {
         private const val MOVIE_TYPE = "movie/"
         private const val GENRES_TYPE = "genre/movie/list?"
         private const val DISCOVER_TYPE = "discover/movie?"
         private const val ACTOR_TYPE = "person/"
+        private const val SEARCH_TYPE = "search/movie?"
 
         private var instance: MovieRemoteDataSource? = null
 

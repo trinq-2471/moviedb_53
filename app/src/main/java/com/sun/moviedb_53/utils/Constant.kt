@@ -9,6 +9,7 @@ object Constant {
     const val BASE_PAGE = "&page="
     const val BASE_SORT_BY_POPULARITY = "&sort_by=popularity.desc"
     const val BASE_WITH_GENRES = "&with_genres="
+    const val BASE_QUERY = "&query="
     const val DEFAULT_PAGE = 1
     const val VISIBLE_THRESHOLD = 3
     const val API_KEY = "api_key="

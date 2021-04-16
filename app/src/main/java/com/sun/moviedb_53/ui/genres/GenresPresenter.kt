@@ -2,8 +2,8 @@ package com.sun.moviedb_53.ui.genres
 
 import com.sun.moviedb_53.data.model.Genre
 import com.sun.moviedb_53.data.model.GenresMovie
-import com.sun.moviedb_53.data.source.MovieRepository
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
+import com.sun.moviedb_53.data.source.repository.MovieRepository
 
 class GenresPresenter internal constructor(private val repository: MovieRepository?) :
     GenresContact.Presenter {

@@ -3,15 +3,13 @@ package com.sun.moviedb_53.ui.genres
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sun.moviedb_53.R
 import com.sun.moviedb_53.base.BaseFragment
 import com.sun.moviedb_53.data.model.Genre
 import com.sun.moviedb_53.data.model.GenresMovie
-import com.sun.moviedb_53.data.source.MovieRepository
-import com.sun.moviedb_53.data.source.local.MovieLocalDataSource
 import com.sun.moviedb_53.data.source.remote.MovieRemoteDataSource
+import com.sun.moviedb_53.data.source.repository.MovieRepository
 import com.sun.moviedb_53.extensions.addFragment
 import com.sun.moviedb_53.ui.detail.movie.MovieDetailFragment
 import com.sun.moviedb_53.ui.genres.adapter.GenresMovieAdapter
@@ -75,8 +73,7 @@ class GenresFragment : BaseFragment(), GenresContact.View {
     private fun initData() {
         genresPresenter = GenresPresenter(
             MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance(),
-                MovieLocalDataSource.getInstance(requireContext())
+                MovieRemoteDataSource.getInstance()
             )
         )
         genresPresenter.setView(this)

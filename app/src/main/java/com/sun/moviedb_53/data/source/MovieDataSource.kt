@@ -41,5 +41,11 @@ interface MovieDataSource {
             actorDetailType: ActorDetailType,
             listener: OnFetchDataJsonListener<T>
         )
+
+        fun getSearchResult(
+            page: Int,
+            query: String,
+            listener: OnFetchDataJsonListener<MutableList<SearchMovie?>>
+        )
     }
 }

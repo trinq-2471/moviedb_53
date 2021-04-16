@@ -58,6 +58,26 @@ class MovieRepository private constructor(
         remote.getDataInActor(idActor, ActorDetailType.EXTERNAL, listener)
     }
 
+    fun getGenres(listener: OnFetchDataJsonListener<MutableList<Genre?>>) {
+        remote.getGenres(listener)
+    }
+
+    fun onGetGenresMovie(
+        page: Int,
+        query: String,
+        listener: OnFetchDataJsonListener<MutableList<GenresMovie?>>
+    ) {
+        remote.getGenresMovie(page, query, listener)
+    }
+
+    fun onGetSearchResult(
+        page: Int,
+        query: String,
+        listener: OnFetchDataJsonListener<MutableList<SearchMovie?>>
+    ){
+        remote.getSearchResult(page,query,listener)
+    }
+
     companion object {
         private var instance: MovieRepository? = null
 

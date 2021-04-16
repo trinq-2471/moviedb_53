@@ -8,5 +8,6 @@ enum class KeyEntityType {
     ACTOR,
     GENRES_MOVIE_ITEM,
     ACTOR_DETAIL,
-    EXTERNAL_ACTOR
+    EXTERNAL_ACTOR,
+    SEARCH_MOVIE_ITEM
 }
