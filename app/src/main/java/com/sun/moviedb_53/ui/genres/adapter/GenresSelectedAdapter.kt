@@ -46,7 +46,7 @@ class GenresSelectedAdapter(
             itemView.apply {
                 textGenresSelected.text = listGenre[adapterPosition]?.name
                 setOnClickListener {
-                    if (listGenre.size != 1)
+                    if (listGenre.size != 1 && adapterPosition in 0..listGenre.size)
                         onClickListener(
                             listGenre[adapterPosition]?.positionSelected,
                             adapterPosition
