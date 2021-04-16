@@ -8,7 +8,7 @@ interface MovieDetailContact {
     interface View {
         fun loadContentMovieOnSuccess(movieDetail: MovieDetail)
         fun loadVideoTrailerOnSuccess(video: VideoYoutube?)
-        fun loadListActorOnSuccess(movies: List<Actor>)
+        fun loadListActorOnSuccess(actors: List<Actor>)
         fun loadRecommendationOnSuccess(movies: List<HotMovie>)
         fun onError(exception: Exception?)
     }

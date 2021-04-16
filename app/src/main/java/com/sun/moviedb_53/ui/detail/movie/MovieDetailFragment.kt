@@ -12,11 +12,12 @@ import com.sun.moviedb_53.R
 import com.sun.moviedb_53.base.BaseFragment
 import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.repository.MovieRepository
-import com.sun.moviedb_53.data.model.*
 import com.sun.moviedb_53.data.source.local.MovieLocalDataSource
 import com.sun.moviedb_53.data.source.remote.MovieRemoteDataSource
 import com.sun.moviedb_53.data.source.repository.FavoriteRepository
+import com.sun.moviedb_53.extensions.addFragment
 import com.sun.moviedb_53.extensions.loadFromUrl
+import com.sun.moviedb_53.ui.detail.actor.ActorFragment
 import com.sun.moviedb_53.utils.Constant
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlin.math.roundToInt
@@ -30,6 +31,17 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
     private var idMovie: Int? = null
     private var detailPresenter: MovieDetailPresenter? = null
 
+    private val recommendationAdapter by lazy {
+        RecommendationAdapter {
+            addFragment(newInstance(it), R.id.mFrameMain)
+        }
+    }
+    private val actorAdapter by lazy {
+        ActorAdapter {
+            addFragment(ActorFragment.newInstance(it), R.id.mFrameMain)
+        }
+    }
+
     override fun getLayoutId() = R.layout.fragment_movie_details
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +52,23 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
             FavoriteRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity()))
         )
         arguments?.let {
-            idMovie = it.getInt(ID_MOVIE_DETAIL)
+            idMovie = it.getInt(BUNDLE_ID_MOVIE_DETAIL)
         }
         detailPresenter?.let {
             it.setView(this)
             idMovie?.let { id ->
                 it.getMovieDetail(id)
                 it.getVideoTrailer(id)
+                it.getListMovieRecommendations(id)
+                it.getActorInMovieDetail(id)
             }
         }
     }
 
     override fun onViewCreated(view: View) {
         onInitView()
+        onInitRecommend()
+        onInitActor()
     }
 
     override fun loadContentMovieOnSuccess(movieDetail: MovieDetail) {
@@ -74,9 +90,13 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         }
     }
 
-    override fun loadListActorOnSuccess(movies: List<Actor>) {}
+    override fun loadListActorOnSuccess(actors: List<Actor>) {
+        actorAdapter.setData(actors)
+    }
 
-    override fun loadRecommendationOnSuccess(movies: List<HotMovie>) {}
+    override fun loadRecommendationOnSuccess(movies: List<HotMovie>) {
+        recommendationAdapter.setData(movies)
+    }
 
     override fun onError(exception: Exception?) {
         exception?.let {
@@ -155,13 +175,27 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         }
     }
 
+    private fun onInitRecommend() {
+        recyclerViewRecommendations.apply {
+            setHasFixedSize(true)
+            adapter = recommendationAdapter
+        }
+    }
+
+    private fun onInitActor() {
+        recyclerViewActor.apply {
+            setHasFixedSize(true)
+            adapter = actorAdapter
+        }
+    }
+
     companion object {
-        private const val ID_MOVIE_DETAIL = "ID_MOVIE_DETAIL"
+        private const val BUNDLE_ID_MOVIE_DETAIL = "ID_MOVIE_DETAIL"
         private const val URI_YOUTUBE_APP = "vnd.youtube:"
         private const val URI_YOUTUBE_WEBSITE = "http://www.youtube.com/watch?v="
 
         fun newInstance(id: Int) = MovieDetailFragment().apply {
-            arguments = bundleOf(ID_MOVIE_DETAIL to id)
+            arguments = bundleOf(BUNDLE_ID_MOVIE_DETAIL to id)
         }
     }
 }
