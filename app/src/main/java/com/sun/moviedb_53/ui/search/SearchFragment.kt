@@ -38,8 +38,8 @@ class SearchFragment : BaseFragment(), SearchMovieContact.View {
     private fun initView() {
         focusEdtSearchMovie()
         imageSearchBack.setOnClickListener {
-            hideKeyboard()
             requireActivity().supportFragmentManager.popBackStack()
+            hideKeyboard()
         }
         imageViewSearch.setOnClickListener {
             page = Constant.DEFAULT_PAGE
@@ -99,25 +99,22 @@ class SearchFragment : BaseFragment(), SearchMovieContact.View {
     }
 
     private fun hideKeyboard() {
-//        val inputMenthodManager =
-//            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-//        var view = activity?.currentFocus
-//        view?.let {
-//            view = View(activity)
-//        }
-//        inputMenthodManager.hideSoftInputFromWindow(view?.windowToken, 0)
-
         val inputMethodManager =
-            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(
-            InputMethodManager.HIDE_IMPLICIT_ONLY,
-            0
-        )
+            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity!!.currentFocus
+        if (view == null) {
+            view = View(activity)
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onSearchSuccess(listSearchMovie: MutableList<SearchMovie?>) {
         if (listSearchMovie.size == 0 && page == Constant.DEFAULT_PAGE) {
-            val toast = Toast.makeText(requireContext(), "No result", Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(
+                requireContext(),
+                context?.getString(R.string.no_result),
+                Toast.LENGTH_SHORT
+            )
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show()
         } else {
