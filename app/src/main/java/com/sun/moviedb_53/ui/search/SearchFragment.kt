@@ -99,13 +99,15 @@ class SearchFragment : BaseFragment(), SearchMovieContact.View {
     }
 
     private fun hideKeyboard() {
-        val inputMethodManager =
-            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity!!.currentFocus
-        if (view == null) {
-            view = View(activity)
+        activity?.let {
+            val inputMethodManager =
+                it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            var view = it.currentFocus
+            if (view == null) {
+                view = View(activity)
+            }
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onSearchSuccess(listSearchMovie: MutableList<SearchMovie?>) {
