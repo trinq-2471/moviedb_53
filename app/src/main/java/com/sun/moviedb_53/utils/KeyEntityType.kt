@@ -5,5 +5,6 @@ enum class KeyEntityType {
     MOVIE_DETAIL,
     GENRES_ITEM,
     VIDEO_YOUTUBE,
-    ACTOR
+    ACTOR,
+    GENRES_MOVIE_ITEM
 }

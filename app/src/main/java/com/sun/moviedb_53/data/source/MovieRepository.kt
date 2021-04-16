@@ -1,5 +1,7 @@
 package com.sun.moviedb_53.data.source
 
+import com.sun.moviedb_53.data.model.Genre
+import com.sun.moviedb_53.data.model.GenresMovie
 import com.sun.moviedb_53.data.model.HotMovie
 import com.sun.moviedb_53.data.model.MovieDetail
 import com.sun.moviedb_53.data.source.remote.OnFetchDataJsonListener
@@ -21,6 +23,18 @@ class MovieRepository private constructor(
 
     fun getMovieDetails(id: Int, listener: OnFetchDataJsonListener<MovieDetail>) {
         remote.getDataInMovieDetail(id, DetailMovieType.MOVIE_DETAIL, listener)
+    }
+
+    fun getGenres(listener: OnFetchDataJsonListener<MutableList<Genre?>>) {
+        remote.getGenres(listener)
+    }
+
+    fun onGetGenresMovie(
+        page: Int,
+        query: String,
+        listener: OnFetchDataJsonListener<MutableList<GenresMovie?>>
+    ) {
+        remote.getGenresMovie(page, query, listener)
     }
 
     companion object {
