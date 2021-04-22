@@ -39,7 +39,7 @@ class FavoriteAdapter(
 
     fun removeItem(position: Int) {
         favorites.removeAt(position)
-        notifyItemRangeRemoved(position, favorites.size)
+        notifyItemRemoved(position)
     }
 
     class FavoriteViewHolder(

@@ -9,6 +9,8 @@ import com.sun.moviedb_53.data.source.repository.FavoriteRepository
 import com.sun.moviedb_53.extensions.addFragment
 import com.sun.moviedb_53.ui.detail.movie.MovieDetailFragment
 import kotlinx.android.synthetic.main.fragment_favourite.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 class FavouriteFragment : BaseFragment(), FavoriteContact.View {
 
@@ -38,6 +40,21 @@ class FavouriteFragment : BaseFragment(), FavoriteContact.View {
             it.setView(this)
             it.onStart()
         }
+        requireActivity().supportFragmentManager.addOnBackStackChangedListener {
+            if (isCheckFavorite) {
+                favoritePresenter?.onStart()
+                isCheckFavorite = false
+            }
+        }
+    }
+
+    override fun onEvent() {
+        swipeRefreshFavorite.setOnRefreshListener {
+            favoritePresenter?.onStart()
+            Timer("refresh", false).schedule(2000) {
+                swipeRefreshFavorite.isRefreshing = false
+            }
+        }
     }
 
     override fun loadFavoriteOnSuccess(movies: MutableList<Favorite>) {
@@ -53,5 +70,7 @@ class FavouriteFragment : BaseFragment(), FavoriteContact.View {
 
     companion object {
         fun newInstance() = FavouriteFragment()
+
+        var isCheckFavorite = false
     }
 }

@@ -20,6 +20,7 @@ import com.sun.moviedb_53.extensions.loadFromUrl
 import com.sun.moviedb_53.extensions.toGone
 import com.sun.moviedb_53.extensions.toVisible
 import com.sun.moviedb_53.ui.detail.actor.ActorFragment
+import com.sun.moviedb_53.ui.favorite.FavouriteFragment
 import com.sun.moviedb_53.utils.Constant
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlin.math.roundToInt
@@ -113,6 +114,7 @@ class MovieDetailFragment : BaseFragment(), MovieDetailContact.View {
         imageFavorite.setOnClickListener {
             favorite?.let {
                 updateFavorite(it)
+                FavouriteFragment.isCheckFavorite = !FavouriteFragment.isCheckFavorite
             }
         }
     }
